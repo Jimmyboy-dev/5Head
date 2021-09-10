@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body,
+html {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  /* @apply; */
+  width: 100vw;
+  height: 100vh;
+}
+
+.frame-wrapper {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.app-root {
+  @apply flex flex-col m-0 w-full h-full;
+}
+
+.app-page-root {
+  @apply flex flex-row w-full h-full;
+}
+
+.sidebar {
+  @apply flex flex-col h-full gap-1;
+  background-color: rgba(0, 0, 0, 0.25);
+}

@@ -1,0 +1,4 @@
+body {
+  @apply grid place-items-center bg-gray-900 bg-cover text-center text-gray-100 align-middle;
+  font-family: "Segoe UI", sans-serif;
+}

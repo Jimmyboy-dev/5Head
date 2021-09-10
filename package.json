@@ -1,0 +1,78 @@
+{
+  "name": "5head",
+  "version": "0.5.0",
+  "license": "MIT",
+  "main": "main/index.js",
+  "author": {
+    "name": "James Vrana",
+    "email": "devjimmyboy@gmail.com",
+    "url": "https://jimmyboy.dev"
+  },
+  "description": "Electron app that manages a stream's music, graphics, and other live features.",
+  "keywords": [
+    "vite",
+    "react",
+    "electron",
+    "typescript",
+    "stream",
+    "nodecg",
+    "utility",
+    ""
+  ],
+  "repository": {
+    "url": "https://github.com/jimmyboy-dev/5Head"
+  },
+  "productName": "vite-reactts-electron-starter",
+  "scripts": {
+    "dev": "concurrently \"yarn dev:vite\" \" yarn dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "npm run build:electron && electron .",
+    "build": "npm run build:vite && npm run build:electron",
+    "build:vite": "vite build",
+    "build:electron": "tsc -p electron",
+    "dist": "npm run build && electron-builder",
+    "pack": "npm run build && electron-builder --dir",
+    "clean": "rimraf dist main src/out",
+    "type-check": "tsc"
+  },
+  "dependencies": {
+    "@mantine/core": "^2.4.3",
+    "@mantine/dates": "^2.4.3",
+    "@mantine/hooks": "^2.4.3",
+    "@mantine/notifications": "^2.4.3",
+    "@mantine/prism": "^2.4.3",
+    "@mdi/font": "6.1.95",
+    "dayjs": "^1.10.6",
+    "electron-is-dev": "^2.0.0",
+    "history": "5",
+    "prism-react-renderer": "^1.2.1",
+    "react": "^18.0.0-alpha-8723e772b-20210826",
+    "react-dom": "^18.0.0-alpha-8723e772b-20210826",
+    "react-iframe": "^1.8.0",
+    "react-jss": "^10.7.1",
+    "react-router-dom": "^6.0.0-beta.2",
+    "roboto-fontface": "0.10.0"
+  },
+  "devDependencies": {
+    "@iconify/react": "^3.0.1",
+    "@tauri-apps/cli": "^1.0.0-beta.10",
+    "@types/node": "^16.9.1",
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
+    "@vitejs/plugin-react-refresh": "^1.3.6",
+    "autoprefixer": "^10.3.4",
+    "concurrently": "^6.2.1",
+    "electron": "^14.0.0",
+    "electron-builder": "^22.11.7",
+    "electron-devtools-installer": "^3.2.0",
+    "npm-run-all": "^4.1.5",
+    "pkg": "^5.3.1",
+    "postcss": "^8.3.6",
+    "postcss-import": "^14.0.2",
+    "postcss-nesting": "^8.0.1",
+    "postcss-preset-env": "^6.7.0",
+    "tailwindcss": "^2.2.14",
+    "typescript": "^4.4.2",
+    "vite": "2.5.6"
+  }
+}

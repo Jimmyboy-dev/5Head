@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "5Head App",
+      "path": "."
+    },
+    {
+      "name": "NodeCG",
+      "path": "./nodecg"
+    },
+    {
+      "name": "NodeCG Bundles",
+      "path": "./nodecg/bundles"
+    }
+  ],
+  "settings": {
+    "git.ignoreLimitWarning": true,
+    "files.exclude": {
+      "nodecg": true,
+      "nodecg/bundles": true
+    }
+  }
+}
