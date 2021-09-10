@@ -1,28 +1,35 @@
-# Vite + React + Typescript + Electron - Starter
+# 5Head Stream Manager App
 
-> It is a simple starter template without unnecessary packages.
+> _I streamer and I go brrr._
 
-This Starter utilizes [Vite](https://github.com/vitejs/vite), [Tailwind](https://tailwindcss.com/)
-, [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/) and [Electron](https://electronjs.org/).
+This App utilizes [Vite](https://github.com/vitejs/vite), [TailwindCSS](https://tailwindcss.com/)
+, [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [NodeCG](https://nodecg.dev), and [Electron](https://electronjs.org/).
 
-By default, the React framework is used for the interface, but you can easily use any other framework such as Vue,
-Preact, Angular, Svelte or anything else.
+#### Disclaimer:
 
-> Vite is framework agnostic
+> I made this app for my stream, so many things might have to be configured or are just straight up not working when applied to others' streams.
 
 ## Installation
+
+> not fully ready for personal use... yet
 
 Clone this repo and install all dependencies  
 `yarn` or `npm install`
 
 ## Development
 
-`yarn dev` or `npm run dev`
+**In root folder:**
+
+```bash
+yarn dev
+```
+
+or
+
+```bash
+npm run dev
+```
 
 ## Build
 
 `yarn build` or `npm run build`
-
-## Publish
-
-`yarn dist` or `npm run dist`
