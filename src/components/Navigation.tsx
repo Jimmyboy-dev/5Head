@@ -8,7 +8,7 @@ import { Link } from "react-router-dom"
 interface Props {}
 
 const tabs = [
-  { name: "Dashboard", path: "/", img: <Image src="/icon.png" height={40} width={40} /> },
+  { name: "Dashboard", path: "/", img: <Image src="/build/icon.png" height={40} width={40} /> },
   { name: "NodeCG", path: "/nodecg", icon: "fas:gauge" },
   { name: "Music", path: "/music", icon: "fas:music-note" },
 ]
