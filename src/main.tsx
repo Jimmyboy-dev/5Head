@@ -5,17 +5,15 @@ import theme from "./theme"
 import App from "./App"
 import { BrowserRouter as Router } from "react-router-dom"
 
-ReactDOM.render(
-  <React.StrictMode>
-    <MantineProvider theme={theme}>
-      <GlobalStyles />
-      <NormalizeCSS />
-      <Router>
-        <App />
-      </Router>
-    </MantineProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+const root = ReactDOM.createRoot(document.getElementById("root"))
+root.render(
+  <MantineProvider theme={theme}>
+    <GlobalStyles />
+    <NormalizeCSS />
+    <Router>
+      <App />
+    </Router>
+  </MantineProvider>
 )
 
 // document.addEventListener("DOMContentLoaded", () => {

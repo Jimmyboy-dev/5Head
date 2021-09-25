@@ -1,4 +1,49 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
 body {
   @apply grid place-items-center bg-gray-900 bg-cover text-center text-gray-100 align-middle;
   font-family: "Segoe UI", sans-serif;
+}
+
+/*
+The loaders use CSS custom properties (variables) to control the attributes of the loaders
+*/
+:root {
+  --loader-width: 200px;
+  --loader-height: 200px;
+  --loader-color-primary: #27ae60;
+  --loader-color-secondary: #eee;
+  --line-width: 3px;
+  --animation-duration: 1250ms;
+  --loader-initial-scale: 0.1;
+}
+
+#spinner,
+#spinner:before,
+#spinner:after {
+  box-sizing: border-box;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+/*
+In order to get optimal results, please only change the 
+variables above and don't change anything in the actual loader code
+*/
+
+@keyframes circle-loader {
+  0% {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+#spinner {
+  transform-origin: center center;
+  width: var(--loader-width, 100px);
+  height: var(--loader-height, 100px);
+  animation: circle-loader var(--animation-duration, 1s) infinite ease-in-out;
 }

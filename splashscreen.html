@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>Loading...</h1>
-    <script type="module" src="./splashscreen.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="src/styles/splash.css" />
+  <title>Loading 5Head</title>
+</head>
+
+<body class="m-5">
+  <div id="spinner"><img src="build/icon.png" width="400" height="400" /></div>
+  <div id="loadText" class="flex flex-row select-none gap-2 animate-pulse mt-4 font-semibold text-2xl">
+    Loading
+    <div class="text-blue-500 font-sans antialiased animate-bounce relative">5Head</div>
+  </div>
+  <script defer type="module" src="./splashscreen.js"></script>
+</body>
+
 </html>

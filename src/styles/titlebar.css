@@ -1,15 +1,13 @@
-*:not(.titlebar) {
-  -webkit-app-region: no-drag;
-}
-
-.titlebar {
-  @apply flex flex-row items-center justify-start bg-gray-600;
-  height: 25px;
-  width: 100%;
-  background: #329ea3;
+.window-drag {
   user-select: none;
   -webkit-app-region: drag;
   -webkit-user-select: none;
+}
+.titlebar {
+  @apply flex flex-row items-center justify-start bg-gray-600;
+  height: 60px;
+  width: 100%;
+  background: #329ea3;
 }
 
 .titlebar-buttons {
@@ -17,11 +15,11 @@
   justify-self: flex-end;
 }
 .titlebar-button {
+  -webkit-app-region: no-drag;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 50px;
+  @apply min-h-0 min-w-0 h-5 w-6 !important;
 }
 .titlebar-button:hover {
   background: #5bbec3;
