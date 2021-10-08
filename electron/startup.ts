@@ -9,11 +9,12 @@ declare global {
 let api = {
   startNodeCG: async () => {
     ipcRenderer.send("backend", "start")
-    // ipcRenderer.once("backend-reply", (_event, arg) => {
-    //   if (arg === "success") ipcRenderer.send("loaded")
-    //   else console.error(arg)
-    // })
-    ipcRenderer.send("loaded")
+    ipcRenderer.once("backend-reply", (_event, arg) => {
+      if (arg === "success") ipcRenderer.send("loaded")
+      else console.error(arg)
+    })
+    // ipcRenderer.send("loaded")
+    return "success"
   },
 }
 

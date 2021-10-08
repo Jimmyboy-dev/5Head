@@ -36,14 +36,17 @@ contextMenu({
   showCopyImageAddress: true,
 })
 async function nodecgInit(root) {
-  nodecg = fork(path.join(__dirname, "../", root, "index.js"), { cwd: path.join(__dirname, "../", root) })
+  nodecg = fork(path.join(__dirname, "../", root, "index.js"), {
+    cwd: path.join(__dirname, "../", root),
+    stdio: ["ipc", "pipe"],
+  })
 
   nodecg.on("error", (err) => {
     console.warn("NodeCG Error:", err)
     bws.window?.webContents.send("nodecgError", err)
   })
   nodecg.stdout?.on("data", (data) => {
-    console.log("NodeCG: ", data.toString())
+    console.log("[NodeCG]", data.toString())
     bws.window?.webContents.send("nodecgLog", data.toString())
   })
   process.on("exit", nodecg.kill)
@@ -207,9 +210,11 @@ ipcMain.on("loaded", (_event: IpcMainEvent, _message: any) => {
 //   event.sender.send("nodecg", "success")
 // })
 
-ipcMain.on("backend", (_event: IpcMainEvent, message: any) => {
+ipcMain.on("backend", (_event: IpcMainEvent, message: string) => {
   if (message === "start") {
-    nodecgInit(process.env.NODECG_ROOT ? process.env.NODECG_ROOT : "nodecg")
+    nodecgInit(process.env.NODECG_ROOT ? process.env.NODECG_ROOT : "nodecg").then(() =>
+      _event.sender.send("backend-reply", "success")
+    )
   } else if (message === "stop") {
     nodecg?.kill()
   }
@@ -232,11 +237,11 @@ function windowControlHandler(_event: IpcMainEvent, message: any) {
 ipcMain.on("electron-window-control", windowControlHandler)
 
 // Exit hook to say we are exiting
-import("exit-hook").then(({ default: exitHook }) =>
-  exitHook(() => {
-    console.log("Exiting 5Head...")
-  })
-)
+// import("exit-hook").then(({ default: exitHook }) =>
+//   exitHook(() => {
+//     console.log("Exiting 5Head...")
+//   })
+// )
 // async function createNodeCGView() {
 //   nodecgView = new BrowserView({
 //     webPreferences: {
