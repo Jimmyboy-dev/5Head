@@ -39,7 +39,7 @@ export default function Navigation({}: Props): ReactElement {
       {tabs.map((val, i, arr) => (
         <ActionIcon
           component={Link}
-          key={val.name}
+          key={i}
           onClick={() => {
             setTab(i)
           }}
@@ -78,7 +78,7 @@ export default function Navigation({}: Props): ReactElement {
         }
         onClick={() => toggleSettings()}
         controlRefProp="elementRef">
-        {Settings({ checked: settingsOpen, toggle: toggleSettings })}
+        <Settings checked={settingsOpen} toggle={toggleSettings} />
       </Menu>
     </nav>
   )

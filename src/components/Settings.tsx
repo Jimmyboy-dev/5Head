@@ -7,11 +7,15 @@ interface Props {
   toggle: (value?: React.SetStateAction<boolean> | undefined) => void
 }
 
-const Settings = (props: Props) => [
-  <Menu.Item key="label">Settings</Menu.Item>,
-  <Menu.Item icon={<Icon icon="far:terminal" key="logger" />}>
-    <Checkbox label="Enable Logger" checked={props.checked} onChange={() => props.toggle} />
-  </Menu.Item>,
-]
+const Settings = (props: Props) => {
+  return (
+    <>
+      <Menu.Item key="label">Settings</Menu.Item>
+      <Menu.Item icon={<Icon icon="far:terminal" key="logger" />}>
+        <Checkbox label="Enable Logger" checked={props.checked} onChange={() => props.toggle} />
+      </Menu.Item>
+    </>
+  )
+}
 
 export default Settings

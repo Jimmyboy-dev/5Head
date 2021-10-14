@@ -9,7 +9,7 @@ import contextMenu from "electron-context-menu"
 import isDev from "electron-is-dev"
 import { ChildProcess, fork } from "child_process"
 var nodecg: ChildProcess
-let mainWindowReady: Promise<void> | null = null
+let mainWindowReady = false
 
 // import nodecgConfig from "../nodecg/cfg/nodecg.json"
 
@@ -119,13 +119,10 @@ async function createWindow(mainState: windowStateKeeper.State) {
 
   const url = isDev ? `http://localhost:${port}` : join(__dirname, "../src/out/index.html")
 
-  isDev ? bws.window?.loadURL(url) : bws.window?.loadFile(url)
-  mainWindowReady = new Promise((resolve, reject) => {
-    const timeout = setTimeout(reject, 15000)
-    bws?.window?.on("ready-to-show", () => {
-      clearTimeout(timeout)
-      resolve()
-    })
+  isDev ? bws.window.loadURL(url) : bws.window.loadFile(url)
+  mainWindowReady = false
+  bws.window?.on("ready-to-show", () => {
+    mainWindowReady = true
   })
 
   // Open the DevTools.
@@ -183,35 +180,27 @@ app.on("window-all-closed", function () {
 
 // listen the channel `message` and resend the received message to the renderer process
 ipcMain.on("loaded", (_event: IpcMainEvent, _message: any) => {
-  mainWindowReady
-    ?.then(() => {
-      // console.log(message)
-      bws.splash?.close()
-      bws.window?.show()
-      if (mainWindowState && bws.window) mainWindowState.manage(bws?.window)
-    })
-    .catch(console.error)
+  const show = () => {
+    // console.log(message)
+    bws.splash?.close()
+    bws.window?.show()
+    if (mainWindowState && bws.window) mainWindowState.manage(bws?.window)
+  }
+  if (mainWindowReady) show()
+  else {
+    var waitingForWindowReady = setInterval(() => {
+      if (mainWindowReady) {
+        clearInterval(waitingForWindowReady)
+        show()
+      }
+    }, 250)
+  }
 
   // setTimeout(() => event.sender.send("loaded", "success"), 500)
 })
 
-// ipcMain.on("nodecg", (event: IpcMainEvent, message: any) => {
-//   console.log("nodecg:", message)
-//   if (message === "open") {
-//     if (nodecgView === null) {
-//       createNodeCGView()
-//     } else if (nodecgView?.webContents.getURL() === `http://localhost:${nodecgPort}`) {
-//       nodecgView.webContents.reload()
-//     }
-//     bws.window?.setBrowserView(nodecgView)
-//   } else if (message === "close") {
-//     bws.window?.setBrowserView(null)
-//   }
-//   event.sender.send("nodecg", "success")
-// })
-
 ipcMain.on("backend", (_event: IpcMainEvent, message: string) => {
-  if (message === "start") {
+  if (message === "start" && (!nodecg || nodecg.killed || !nodecg.pid)) {
     nodecgInit(process.env.NODECG_ROOT ? process.env.NODECG_ROOT : "nodecg").then(() =>
       _event.sender.send("backend-reply", "success")
     )

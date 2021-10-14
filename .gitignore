@@ -20,6 +20,5 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 .env
-nodecg/
 icons/
-logs/nodecg.log
+nodecg.log

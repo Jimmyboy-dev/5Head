@@ -39,17 +39,7 @@ export const api = {
   on: (channel: string, callback: Function) => {
     ipcRenderer.on(channel, (_, data) => callback(data))
   },
-  /**
-   * Tell Main process to open or close (hide) the nodecg browser view.
-   */
-  nodecg: {
-    open: () => {
-      ipcRenderer.send("nodecg", "open")
-    },
-    close: () => {
-      ipcRenderer.send("nodecg", "close")
-    },
-  },
+
   window: {
     close: () => ipcRenderer.send("electron-window-control", "close"),
     maximize: () => ipcRenderer.send("electron-window-control", "maximize"),
