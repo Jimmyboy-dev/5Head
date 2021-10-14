@@ -1,35 +1,15 @@
-# 5Head Stream Manager App
+# 5Head Stream Manager
 
-> _I streamer and I go brrr._
+An All-in-One Application to handle and enhance many things that are tedious while streaming.
 
-This App utilizes [Vite](https://github.com/vitejs/vite), [TailwindCSS](https://tailwindcss.com/)
-, [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [NodeCG](https://nodecg.dev), and [Electron](https://electronjs.org/).
+> I streamer and I go brr
 
-#### Disclaimer:
+![5Head Logo](public/icon.png)
 
-> I made this app for my stream, so many things might have to be configured or are just straight up not working when applied to others' streams.
+## Current and Planned Features
 
-## Installation
-
-> not fully ready for personal use... yet
-
-Clone this repo and install all dependencies  
-`yarn` or `npm install`
-
-## Development
-
-**In root folder:**
-
-```bash
-yarn dev
-```
-
-or
-
-```bash
-npm run dev
-```
-
-## Build
-
-`yarn build` or `npm run build`
+- [x] Runs an overlay server in the background [(NodeCG)](https://nodecg.dev)
+- [x] Embedded Dashboard w/ chat
+- [x] Login w/ Twitch
+- [x] Cross platform
+- [ ] Categorize Music into 'Moods' that you can play on demands

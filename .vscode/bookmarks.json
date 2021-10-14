@@ -1,0 +1,14 @@
+{
+	"files": [
+		{
+			"path": "electron/index.ts",
+			"bookmarks": [
+				{
+					"line": 140,
+					"column": 1,
+					"label": "App Ready"
+				}
+			]
+		}
+	]
+}

@@ -7,21 +7,21 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["dom", "es2017"],
+    "lib": ["es2017", "DOM"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": false,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    "outDir": "../main"
+    "outDir": "../main",
+    "types": []
   },
   "exclude": ["node_modules", "../node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js"]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js"],
+  "files": ["db.d.ts", "api.d.ts"]
 }

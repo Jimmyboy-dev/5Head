@@ -3,7 +3,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 import path, { join } from "path"
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent, Tray, Menu, nativeImage } from "electron"
+import { BrowserWindow, app, ipcMain, IpcMainEvent, Tray, Menu, nativeImage, shell } from "electron"
 import windowStateKeeper from "electron-window-state"
 import contextMenu from "electron-context-menu"
 import isDev from "electron-is-dev"
@@ -11,11 +11,15 @@ import { ChildProcess, fork } from "child_process"
 var nodecg: ChildProcess
 let mainWindowReady = false
 
-// import nodecgConfig from "../nodecg/cfg/nodecg.json"
+import { ElectronAuthProvider } from "@twurple/auth-electron"
 
-// try {
-//   require("electron-reloader")(module)
-// } catch {}
+const clientId = process.env.VITE_TWITCH_CLIENT_ID || ""
+const redirectUri = "http://localhost:9090/login/twitch/auth"
+
+const authProvider = new ElectronAuthProvider({
+  clientId,
+  redirectUri,
+})
 
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
@@ -25,7 +29,7 @@ if (process.defaultApp) {
   app.setAsDefaultProtocolClient("5head")
 }
 
-let tray
+let tray: Tray
 
 const bws: { window?: BrowserWindow; splash?: BrowserWindow; nodecg?: BrowserWindow } = {}
 
@@ -35,7 +39,7 @@ contextMenu({
   showCopyImage: true,
   showCopyImageAddress: true,
 })
-async function nodecgInit(root) {
+async function nodecgInit(root: string) {
   nodecg = fork(path.join(__dirname, "../", root, "index.js"), {
     cwd: path.join(__dirname, "../", root),
     stdio: ["ipc", "pipe"],
@@ -46,7 +50,7 @@ async function nodecgInit(root) {
     bws.window?.webContents.send("nodecgError", err)
   })
   nodecg.stdout?.on("data", (data) => {
-    console.log("[NodeCG]", data.toString())
+    // console.log("[NodeCG]", data.toString())
     bws.window?.webContents.send("nodecgLog", data.toString())
   })
   process.on("exit", nodecg.kill)
@@ -63,7 +67,7 @@ async function createWindow(mainState: windowStateKeeper.State) {
     width: sWidth,
     height: sHeight,
     frame: false,
-    show: false,
+    show: true,
     resizable: false,
     fullscreenable: false,
     icon: join(__dirname, "../build/icon.ico"),
@@ -136,18 +140,30 @@ let mainWindowState: windowStateKeeper.State
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Init System Tray
-  const icon = nativeImage.createFromPath("../build/icon.png")
+  const icon = nativeImage.createFromPath(path.join(__dirname, "../build/icon.png"))
+  console.log(icon.isEmpty() ? "Icon not found" : "Icon Found")
   tray = new Tray(icon)
 
   const contextMenu = Menu.buildFromTemplate([
     { label: "About", role: "about" },
-
-    { label: "Reload App", role: "reload" },
+    {
+      label: "NodeCG",
+      type: "submenu",
+      submenu: [{ label: "Reload" }],
+    },
+    { label: "Reload App", role: "reload", click: () => app.relaunch() },
     { label: "Quit", role: "close", click: () => app.quit() },
   ])
   tray.setContextMenu(contextMenu)
+  tray.on("click", () => {
+    if (bws.window?.isFocused()) {
+      bws.window?.hide()
+    } else {
+      bws.window?.show()
+    }
+  })
 
-  tray.setToolTip("5Head is running...")
+  tray.setToolTip("5Head")
   tray.setTitle("5Head")
 
   // Load the previous state with fallback to defaults
@@ -174,56 +190,6 @@ app.whenReady().then(() => {
 app.on("window-all-closed", function () {
   if (process.platform !== "darwin") app.quit()
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
-
-// listen the channel `message` and resend the received message to the renderer process
-ipcMain.on("loaded", (_event: IpcMainEvent, _message: any) => {
-  const show = () => {
-    // console.log(message)
-    bws.splash?.close()
-    bws.window?.show()
-    if (mainWindowState && bws.window) mainWindowState.manage(bws?.window)
-  }
-  if (mainWindowReady) show()
-  else {
-    var waitingForWindowReady = setInterval(() => {
-      if (mainWindowReady) {
-        clearInterval(waitingForWindowReady)
-        show()
-      }
-    }, 250)
-  }
-
-  // setTimeout(() => event.sender.send("loaded", "success"), 500)
-})
-
-ipcMain.on("backend", (_event: IpcMainEvent, message: string) => {
-  if (message === "start" && (!nodecg || nodecg.killed || !nodecg.pid)) {
-    nodecgInit(process.env.NODECG_ROOT ? process.env.NODECG_ROOT : "nodecg").then(() =>
-      _event.sender.send("backend-reply", "success")
-    )
-  } else if (message === "stop") {
-    nodecg?.kill()
-  }
-
-  // event.reply("backend-reply", "success")
-})
-
-function windowControlHandler(_event: IpcMainEvent, message: any) {
-  if (message === "minimize") {
-    bws.window?.minimize()
-  } else if (message === "maximize" && bws.window?.isMaximized()) {
-    bws.window?.unmaximize()
-  } else if (message === "maximize") {
-    bws.window?.maximize()
-  } else if (message === "close") {
-    bws.window?.close()
-  }
-}
-
-ipcMain.on("electron-window-control", windowControlHandler)
 
 // Exit hook to say we are exiting
 // import("exit-hook").then(({ default: exitHook }) =>

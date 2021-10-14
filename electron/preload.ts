@@ -15,7 +15,7 @@ import { ipcRenderer } from "electron"
 const logEvent = new Event("onnodecglog")
 declare global {
   interface Window {
-    api: typeof api
+    api: API
     // ipcRenderer: typeof ipcRenderer
     __devtron: typeof nodeInt
     logEntry: string
@@ -23,19 +23,12 @@ declare global {
   }
 }
 
-export const api = {
-  /**
-   * Here you can expose functions to the renderer process
-   * so they can interact with the main (electron) side
-   * without security problems.
-   */
+export const api: API = {
   mainWindowReady: (message: string) => {
     // ipcRenderer.send("loaded", message)
     return message
   },
-  /**
-   * Provide an easier way to listen to events
-   */
+
   on: (channel: string, callback: Function) => {
     ipcRenderer.on(channel, (_, data) => callback(data))
   },
@@ -44,6 +37,12 @@ export const api = {
     close: () => ipcRenderer.send("electron-window-control", "close"),
     maximize: () => ipcRenderer.send("electron-window-control", "maximize"),
     minimize: () => ipcRenderer.send("electron-window-control", "minimize"),
+  },
+
+  nodecg: {
+    reload: () => ipcRenderer.send("nodecg-reload"),
+    stop: () => ipcRenderer.send("nodecg-stop"),
+    start: () => ipcRenderer.send("nodecg-start"),
   },
 }
 export const nodeInt = { require: require, process: process }
