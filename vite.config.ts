@@ -51,7 +51,7 @@ export default ({ command }: ConfigEnv): UserConfig => {
         outDir: join(srcRoot, "/out"),
         emptyOutDir: true,
         rollupOptions: {
-          external: ["icons/iconify.js"],
+          external: ["/icons/iconify.js"],
           input: {
             main: resolve(__dirname, "index.html"),
             splashscreen: resolve(__dirname, "splashscreen.html"),
