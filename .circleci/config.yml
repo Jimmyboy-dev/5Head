@@ -20,7 +20,11 @@ workflows:
       - install-packages
       - node/run:
           version: '16.11.1' 
-          npm-run: build
+          npm-run: dist
+          pkg-manager: yarn
+      - node/run:
+          version: '16.11.1' 
+          npm-run: pack
           pkg-manager: yarn
           # This is the node version to use for the `cimg/node` tag
           # Relevant tags can be found on the CircleCI Developer Hub
