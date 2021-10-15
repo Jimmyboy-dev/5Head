@@ -44,6 +44,7 @@
     "@mantine/prism": "^3.0.4",
     "@mdi/font": "6.2.95",
     "@twurple/auth-electron": "^5.0.5",
+    "core-js": "^3.18.3",
     "dayjs": "1.10.7",
     "electron-context-menu": "^3.1.1",
     "electron-debug": "^3.2.0",
