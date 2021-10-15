@@ -39,7 +39,7 @@ export default ({ command }: ConfigEnv): UserConfig => {
   // PROD
   else {
     return {
-      base: `${__dirname}/src/out/`,
+      base: `/src/out/`,
       plugins: [reactRefresh()],
       resolve: {
         alias: {

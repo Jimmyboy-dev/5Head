@@ -1,4 +1,3 @@
-import * as installer from "electron-devtools-installer";
 // Native
 import path, { join } from "path";
 
@@ -25,6 +24,10 @@ var nodecg: ChildProcess;
 
 import { ElectronAuthProvider } from "@twurple/auth-electron";
 import { resolveHtmlPath } from "./util";
+let installer: typeof import("electron-devtools-installer");
+if (isDev) {
+  installer = require("electron-devtools-installer");
+}
 
 const clientId = process.env.VITE_TWITCH_CLIENT_ID || "";
 const redirectUri = "http://localhost:9090/login/twitch/auth";
