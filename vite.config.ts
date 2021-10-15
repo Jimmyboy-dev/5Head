@@ -1,10 +1,10 @@
-import reactRefresh from "@vitejs/plugin-react-refresh"
-import { UserConfig, ConfigEnv } from "vite"
-const { resolve } = require("path")
+import reactRefresh from "@vitejs/plugin-react-refresh";
+import { UserConfig, ConfigEnv } from "vite";
+const { resolve } = require("path");
 
-import { join } from "path"
+import { join } from "path";
 
-const srcRoot = join(__dirname, "src")
+const srcRoot = join(__dirname, "src");
 
 export default ({ command }: ConfigEnv): UserConfig => {
   // DEV
@@ -34,7 +34,7 @@ export default ({ command }: ConfigEnv): UserConfig => {
       optimizeDeps: {
         exclude: ["path"],
       },
-    }
+    };
   }
   // PROD
   else {
@@ -51,6 +51,7 @@ export default ({ command }: ConfigEnv): UserConfig => {
         outDir: join(srcRoot, "/out"),
         emptyOutDir: true,
         rollupOptions: {
+          external: ["icons/iconify.js"],
           input: {
             main: resolve(__dirname, "index.html"),
             splashscreen: resolve(__dirname, "splashscreen.html"),
@@ -63,6 +64,6 @@ export default ({ command }: ConfigEnv): UserConfig => {
       optimizeDeps: {
         exclude: ["path"],
       },
-    }
+    };
   }
-}
+};
