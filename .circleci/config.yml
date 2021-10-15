@@ -19,6 +19,7 @@ workflows:
     jobs:
       - install-packages
       - node/run:
+          version: '16.11.1' 
           npm-run: build
           pkg-manager: yarn
           # This is the node version to use for the `cimg/node` tag
