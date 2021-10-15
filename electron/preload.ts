@@ -1,16 +1,5 @@
 import { ipcRenderer } from "electron"
-// import { join } from "path"
-// import { dbData } from "./db"
-// import { Low, JSONFile } from "lowdb"
-
-// import "electron-cookies"
-
-// var db = new Low<dbData>(new JSONFile<dbData>("db.json"))
-// db.read().then(() => {
-//   db.data ||= { logLevel: "info", logPath: join(__dirname, "logs"), userSettings: { loggerPage: false } }
-//   console.log("db loaded:\n", db.data)
-//   window.db = db
-// })
+import { join } from "path"
 
 const logEvent = new Event("onnodecglog")
 declare global {

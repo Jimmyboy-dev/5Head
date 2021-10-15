@@ -2,7 +2,7 @@
   "name": "5head",
   "version": "0.5.0",
   "license": "MIT",
-  "main": "main/index.js",
+  "main": "main/main.js",
   "private": true,
   "author": {
     "name": "James Vrana",
@@ -17,8 +17,7 @@
     "typescript",
     "stream",
     "nodecg",
-    "utility",
-    ""
+    "utility"
   ],
   "repository": {
     "url": "https://github.com/jimmyboy-dev/5Head"
@@ -38,19 +37,20 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@mantine/core": "^2.5.1",
-    "@mantine/dates": "^2.5.1",
-    "@mantine/hooks": "^2.5.1",
-    "@mantine/notifications": "^2.5.1",
-    "@mantine/prism": "^2.5.1",
-    "@mdi/font": "6.1.95",
+    "@mantine/core": "^3.0.4",
+    "@mantine/dates": "^3.0.4",
+    "@mantine/hooks": "^3.0.4",
+    "@mantine/notifications": "^3.0.4",
+    "@mantine/prism": "^3.0.4",
+    "@mdi/font": "6.2.95",
     "@twurple/auth-electron": "^5.0.5",
     "dayjs": "1.10.7",
     "electron-context-menu": "^3.1.1",
-    "electron-cookies": "heap/electron-cookies",
+    "electron-debug": "^3.2.0",
     "electron-is": "^3.0.0",
     "electron-is-dev": "^2.0.0",
     "electron-log": "^4.4.1",
+    "electron-updater": "^4.3.9",
     "electron-window-state": "^5.0.3",
     "history": "5",
     "lowdb": "^3.0.0",
@@ -64,25 +64,25 @@
   },
   "devDependencies": {
     "@iconify/react": "^3.0.1",
-    "@types/node": "^16.10.9",
-    "@types/react": "^17.0.24",
+    "@types/node": "^16.11.0",
+    "@types/react": "^17.0.30",
     "@types/react-dom": "^17.0.9",
     "@vitejs/plugin-react-refresh": "^1.3.6",
-    "autoprefixer": "^10.3.5",
-    "concurrently": "^6.2.1",
+    "autoprefixer": "^10.3.7",
+    "concurrently": "^6.3.0",
     "devtron": "^1.4.0",
-    "electron": "^15.0.0",
+    "electron": "^15.2.0",
     "electron-builder": "22.14.2",
     "electron-devtools-installer": "^3.2.0",
     "electron-reloader": "^1.2.1",
     "npm-run-all": "^4.1.5",
-    "pkg": "^5.3.2",
-    "postcss": "^8.3.7",
+    "pkg": "^5.3.3",
+    "postcss": "^8.3.9",
     "postcss-import": "^14.0.2",
     "postcss-nesting": "^8.0.1",
     "postcss-preset-env": "^6.7.0",
-    "tailwindcss": "2.2.15",
-    "typescript": "4.4.3",
-    "vite": "2.5.10"
+    "tailwindcss": "2.2.17",
+    "typescript": "4.4.4",
+    "vite": "2.6.7"
   }
 }

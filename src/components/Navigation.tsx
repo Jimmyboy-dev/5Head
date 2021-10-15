@@ -1,24 +1,28 @@
-import { Icon } from "@iconify/react"
-import { ActionIcon, Image } from "@mantine/core"
-import { useBooleanToggle } from "@mantine/hooks"
-import { Menu, MenuItem, MenuLabel, Divider, Text } from "@mantine/core"
-import React, { ReactElement } from "react"
-import { Link, NavLink, useLocation } from "react-router-dom"
+import { Icon } from "@iconify/react";
+import { ActionIcon, Image } from "@mantine/core";
+import { useBooleanToggle } from "@mantine/hooks";
+import { Menu, MenuItem, MenuLabel, Divider, Text } from "@mantine/core";
+import React, { ReactElement } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 // import { useDB } from "../lib/hooks"
-import Settings from "./Settings"
+import Settings from "./Settings";
 
 interface Props {}
 
 const tabs = [
-  { name: "Dashboard", path: "/", img: <Image src="/build/icon.png" height={40} width={40} /> },
+  {
+    name: "Dashboard",
+    path: "/",
+    img: <Image src="/build/icon.png" height={40} width={40} />,
+  },
   { name: "NodeCG", path: "/nodecg", icon: "fas:gauge" },
   { name: "Music", path: "/music", icon: "fas:music-note" },
-]
+];
 
 export default function Navigation({}: Props): ReactElement {
-  const [currentTab, setTab] = React.useState(0)
-  const [settingsOpen, toggleSettings] = useBooleanToggle(false)
-  const [logsOpen, toggleLogs] = useBooleanToggle(false)
+  const [currentTab, setTab] = React.useState(0);
+  const [settingsOpen, toggleSettings] = useBooleanToggle(false);
+  const [logsOpen, toggleLogs] = useBooleanToggle(false);
 
   // const { data: db } = useDB()
   // const location = useLocation()
@@ -41,13 +45,14 @@ export default function Navigation({}: Props): ReactElement {
           component={Link}
           key={i}
           onClick={() => {
-            setTab(i)
+            setTab(i);
           }}
           style={{ width: "48px", height: "48px" }}
           title={val.name}
           radius="lg"
           to={val.path}
-          variant={currentTab == i ? "filled" : "transparent"}>
+          variant={currentTab == i ? "filled" : "transparent"}
+        >
           {val.img || <Icon icon={val.icon} fontSize={20} />}
         </ActionIcon>
       ))}
@@ -60,7 +65,8 @@ export default function Navigation({}: Props): ReactElement {
           component={NavLink}
           to="/logs"
           onClick={() => setTab(4)}
-          variant={currentTab == 4 ? "filled" : "light"}>
+          variant={currentTab == 4 ? "filled" : "light"}
+        >
           <Icon icon="fas:terminal" fontSize={20} />
         </ActionIcon>
       }
@@ -68,18 +74,22 @@ export default function Navigation({}: Props): ReactElement {
         control={
           <ActionIcon
             style={{ width: "48px", height: "48px" }}
-            key="settingsMenuControl
-            "
+            key="settingsMenuControl"
             radius="lg"
             title="Settings"
-            variant={settingsOpen ? "hover" : "transparent"}>
-            <Icon className={settingsOpen ? "animate-spin" : ""} icon="far:gear" fontSize={20} />
+            variant={settingsOpen ? "hover" : "transparent"}
+          >
+            <Icon
+              className={settingsOpen ? "animate-spin" : ""}
+              icon="far:gear"
+              fontSize={20}
+            />
           </ActionIcon>
         }
         onClick={() => toggleSettings()}
-        controlRefProp="elementRef">
+      >
         <Settings checked={settingsOpen} toggle={toggleSettings} />
       </Menu>
     </nav>
-  )
+  );
 }

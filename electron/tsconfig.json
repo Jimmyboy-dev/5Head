@@ -19,7 +19,7 @@
     "strict": true,
     "target": "ESNext",
     "outDir": "../main",
-    "types": []
+    "types": ["node"]
   },
   "exclude": ["node_modules", "../node_modules"],
   "include": ["**/*.ts", "**/*.tsx", "**/*.js"],
