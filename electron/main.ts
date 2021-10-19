@@ -19,11 +19,42 @@ import log from "electron-log";
 import windowStateKeeper from "electron-window-state";
 import contextMenu from "electron-context-menu";
 import isDev from "electron-is-dev";
-import { ChildProcess, fork } from "child_process";
-var nodecg: ChildProcess;
-
 import { ElectronAuthProvider } from "@twurple/auth-electron";
 import { resolveHtmlPath } from "./util";
+import Store, { Schema } from "electron-store";
+import { NodeCG } from "./nodecg";
+import electronDl from "electron-dl";
+import serve from "electron-serve";
+var AutoLaunch = require("auto-launch");
+
+const loadURL = serve({ directory: isDev ? "./" : "src/out" });
+
+electronDl();
+
+const schema: Schema<{
+  [key: string]: any;
+}> = {
+  nodecgRoot: {
+    type: "string",
+    default: `file://${path.join(
+      process.env.HOME || __dirname + "../",
+      "nodecg"
+    )}`,
+  },
+};
+
+const store = new Store({ schema });
+
+var nodecg: NodeCG;
+var autoLauncher = new AutoLaunch({
+  name: "5Head",
+});
+let autoLaunch = store.get("options.autoLaunch");
+if (autoLaunch != autoLauncher.isEnabled()) {
+  autoLauncher
+    .isEnabled()
+    .then((v: boolean) => (v ? autoLauncher.disable() : autoLauncher.enable()));
+}
 let installer: typeof import("electron-devtools-installer");
 if (isDev) {
   installer = require("electron-devtools-installer");
@@ -39,7 +70,7 @@ const authProvider = new ElectronAuthProvider({
 
 export default class AppUpdater {
   constructor() {
-    log.transports.file.level = "info";
+    log.transports.file.level = "debug";
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
@@ -96,21 +127,12 @@ contextMenu({
     return menu;
   },
 });
+
 async function nodecgInit(root: string) {
-  nodecg = fork(path.join(__dirname, "../", root, "index.js"), {
+  nodecg = new NodeCG(path.join(__dirname, "../", root, "index.js"), {
     cwd: path.join(__dirname, "../", root),
     stdio: ["ipc", "pipe"],
   });
-
-  nodecg.on("error", (err) => {
-    console.warn("NodeCG Error:", err);
-    bws.window?.webContents.send("nodecgError", err);
-  });
-  nodecg.stdout?.on("data", (data) => {
-    // console.log("[NodeCG]", data.toString())
-    bws.window?.webContents.send("nodecgLog", data.toString());
-  });
-  process.on("exit", nodecg.kill);
 }
 
 const height = 600;
@@ -182,7 +204,7 @@ async function createWindow(mainState: windowStateKeeper.State) {
     },
   });
 
-  bws.window.loadURL(resolveHtmlPath("index.html"));
+  loadURL(bws.window);
 
   bws.window?.on("ready-to-show", () => {
     if (bws.splash) bws.splash.close();
@@ -226,7 +248,7 @@ app.whenReady().then(() => {
   ]);
   tray.setContextMenu(contextMenu);
   tray.on("click", () => {
-    if (bws.window?.isFocused()) {
+    if (bws.window?.isVisible()) {
       bws.window?.hide();
     } else {
       bws.window?.show();
@@ -261,7 +283,10 @@ app.on("window-all-closed", function () {
 //// listen the channel `message` and resend the received message to the renderer process
 
 ipcMain.on("backend", (_event: IpcMainEvent, message: string) => {
-  if (message === "start" && (!nodecg || nodecg.killed || !nodecg.pid)) {
+  if (
+    message === "start" &&
+    nodecg.status.search(/(starting|running)/g) == -1
+  ) {
     nodecgInit(
       process.env.NODECG_ROOT ? process.env.NODECG_ROOT : "nodecg"
     ).then(() => _event.sender.send("backend-reply", "success"));
@@ -289,6 +314,20 @@ function windowControlHandler(_event: IpcMainEvent, message: any) {
 }
 
 ipcMain.on("electron-window-control", windowControlHandler);
+
+ipcMain.handle("getStoreValue", (event, key) => {
+  return store.get(key);
+});
+ipcMain.handle("setStoreValue", (event, key, value) => {
+  const prev = store.get(key);
+  store.set(key, value);
+  return prev;
+});
+
+ipcMain.handle("nodecg-status", (event, ...args) => {
+  // nodecg.\
+  return "running";
+});
 // Exit hook to say we are exiting
 // import("exit-hook").then(({ default: exitHook }) =>
 //   exitHook(() => {

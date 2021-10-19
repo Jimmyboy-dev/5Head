@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from "react"
+import { useEffect, useState, createContext } from "react";
 
 // const nodeCGStatus = createContext()
 // const dbPromise = window.db?.read() || Promise.reject("No database")
@@ -17,14 +17,21 @@ import { useEffect, useState, createContext } from "react"
 //   }, [db])
 //   return { data: db, set: setDB }
 // }
-
+const currStatus: NodeCGStatus = await window.api.nodecg.status();
 export const useNodeCGStatus = () => {
-  const [status, setStatus] = useState(null)
-}
+  const [status, setStatus] = useState(currStatus);
+  useEffect(() => {
+    const getStatus = async function () {
+      setStatus(await window.api.nodecg.status());
+    };
+    getStatus();
+  });
+  return status;
+};
 
 const hooks = {
   // useDB,
   useNodeCGStatus,
-}
+};
 
-export default hooks
+export default hooks;

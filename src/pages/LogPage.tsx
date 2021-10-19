@@ -18,17 +18,26 @@ export default function LogPage({}: Props): ReactElement {
   return (
     <Center
       style={{
+        maxHeight: "100%",
+        overflow: "hidden",
         width: "100%",
         height: "100%",
         backgroundColor: "rgba(0, 0, 0, 0.2)",
       }}
       className="rounded-md mx-4 my-2"
     >
-      <Group direction="column" position="right" grow>
+      <Group direction="column" position="left" className="bottom-2">
         {logList.map((log, index) => (
-          <div key={index}>{log}</div>
+          <LogLine log={log} key={index} />
         ))}
       </Group>
     </Center>
   );
 }
+
+interface LogProps {
+  log: string;
+}
+const LogLine = (props: LogProps) => {
+  return <div>{props.log}</div>;
+};

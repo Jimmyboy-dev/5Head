@@ -13,6 +13,6 @@ if (isDev) {
   };
 } else {
   resolveHtmlPath = (htmlFileName: string) => {
-    return `file://${path.resolve(__dirname, "../src/out/", htmlFileName)}`;
+    return `file://${path.join(__dirname, "../src/out/", htmlFileName)}`;
   };
 }

@@ -10,17 +10,23 @@ if (process.env.VITE_APP_VERSION === undefined) {
  * @see https://www.electron.build/configuration/configuration
  */
 const config = {
-  name: "five-head",
-  productName: "5Head Manager",
+  productName: "5Head",
   appId: "app.jimmyboy.fivehead",
   asar: true,
   directories: {
     output: "dist",
     buildResources: "build",
   },
-  files: ["main", "src/out"],
-  extraMetadata: {
-    version: process.env.VITE_APP_VERSION,
+  files: ["main", "src/out", "build/icon.*"],
+  mac: {
+    category: "public.app-category.utilities",
+    target: ["default", "dmg", "zip"],
   },
+  win: {
+    target: ["nsis", "msi"],
+  },
+  linux: { target: ["AppImage", "deb", "rpm"] },
+  publish: [{ provider: "github" }],
+  nodeVersion: "current",
 };
 module.exports = config;

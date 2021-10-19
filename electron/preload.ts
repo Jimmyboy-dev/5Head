@@ -1,13 +1,13 @@
-import { ipcRenderer } from "electron"
-import { join } from "path"
+import { ipcRenderer } from "electron";
+import { join } from "path";
 
-const logEvent = new Event("onnodecglog")
+const logEvent = new Event("onnodecglog");
 declare global {
   interface Window {
-    api: API
+    api: API;
     // ipcRenderer: typeof ipcRenderer
-    __devtron: typeof nodeInt
-    logEntry: string
+    __devtron: typeof nodeInt;
+    logEntry: string;
     // db: Low<dbData>
   }
 }
@@ -15,11 +15,11 @@ declare global {
 export const api: API = {
   mainWindowReady: (message: string) => {
     // ipcRenderer.send("loaded", message)
-    return message
+    return message;
   },
 
   on: (channel: string, callback: Function) => {
-    ipcRenderer.on(channel, (_, data) => callback(data))
+    ipcRenderer.on(channel, (_, data) => callback(data));
   },
 
   window: {
@@ -32,23 +32,29 @@ export const api: API = {
     reload: () => ipcRenderer.send("nodecg-reload"),
     stop: () => ipcRenderer.send("nodecg-stop"),
     start: () => ipcRenderer.send("nodecg-start"),
+    status: async () => await ipcRenderer.invoke("nodecg-status"),
   },
-}
-export const nodeInt = { require: require, process: process }
-window.api = api
+  config: {
+    get: async (key: string) => await ipcRenderer.invoke("getStoreValue", key),
+    set: async (key: string, value: string) =>
+      await ipcRenderer.invoke("setStoreValue", key, value),
+  },
+};
+export const nodeInt = { require: require, process: process };
+window.api = api;
 
 if (process.env.NODE_ENV === "development") {
-  window.__devtron = nodeInt
+  window.__devtron = nodeInt;
 }
 
 ipcRenderer.on("nodecgLog", (_, data: string) => {
-  window.logEntry = data
-  window.dispatchEvent(logEvent)
-})
+  window.logEntry = data;
+  window.dispatchEvent(logEvent);
+});
 ipcRenderer.on("nodecgError", (_, err: string) => {
-  window.logEntry = err
-  window.dispatchEvent(logEvent)
-})
+  window.logEntry = err;
+  window.dispatchEvent(logEvent);
+});
 
 /**
  * Using the ipcRenderer directly in the browser through the contextBridge ist not really secure.

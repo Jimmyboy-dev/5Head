@@ -4,22 +4,30 @@ interface API {
    * so they can interact with the main (electron) side
    * without security problems.
    */
-  mainWindowReady: Function
+  mainWindowReady: Function;
   /**
    * Provide an easier way to listen to events
    */
-  on: Function
+  on: Function;
   window: {
-    close: Function
-    maximize: Function
-    minimize: Function
-  }
+    close: () => void;
+    maximize: () => void;
+    minimize: () => void;
+  };
   /**
    * Api for controlling the NodeCG Backend.
    */
   nodecg: {
-    reload: Function
-    stop: Function
-    start: Function
-  }
+    reload: () => void;
+    stop: () => void;
+    start: () => void;
+    status: () => Promise<NodeCGStatus>;
+  };
+
+  config: {
+    get: (key: string) => Promise<any>;
+    set: (key: string, val: any) => Promise<void>;
+  };
 }
+
+type NodeCGStatus = "stopped" | "starting" | "running" | "stopping";
